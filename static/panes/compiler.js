@@ -679,7 +679,7 @@ Compiler.prototype.setAssembly = function (asm) {
     this.updateDecorations();
 
     var codeLenses = [];
-    if (this.getEffectiveFilters().binary) {
+    /*if (this.getEffectiveFilters().binary) {
         this.setBinaryMargin();
         _.each(this.assembly, _.bind(function (obj, line) {
             if (obj.opcodes) {
@@ -698,9 +698,9 @@ Compiler.prototype.setAssembly = function (asm) {
                 });
             }
         }, this));
-    } else {
-        this.setNormalMargin();
-    }
+    } else {*/
+    this.setNormalMargin();
+    //}
 
     codeLensHandler.registerLensesForCompiler(this.id, editorModel, codeLenses);
 
@@ -975,6 +975,7 @@ Compiler.prototype.onCfgViewClosed = function (id) {
 
 Compiler.prototype.initButtons = function (state) {
     this.filters = new Toggles(this.domRoot.find('.filters'), patchOldFilters(state.filters));
+    this.filters.binary = true;
 
     this.optButton = this.domRoot.find('.btn.view-optimization');
     this.astButton = this.domRoot.find('.btn.view-ast');
