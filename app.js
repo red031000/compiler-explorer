@@ -574,7 +574,7 @@ async function main() {
     const morganFormat = isDevMode() ? 'dev' : ':gdpr_ip ":method :url" :status';
 
     const shortenerLib = require(`./lib/shortener-${clientOptionsHandler.options.urlShortenService}`);
-    const shortener = shortenerLib({storageHandler});
+    const shortener = shortenerLib({storageHandler}, clientOptionsHandler.options.host);
 
     /*
      * This is a workaround to make cross origin monaco web workers function
