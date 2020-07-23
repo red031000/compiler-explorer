@@ -63,7 +63,7 @@ const opts = nopt({
     tmpDir: [String],
     wsl: [Boolean],
     // If specified, only loads the specified language, resulting in faster loadup/iteration times
-    language: [String],
+    language: [String, Array],
     // Do not use caching for compilation results (Requests might still be cached by the client's browser)
     noCache: [Boolean],
     // Don't cleanly run if two or more compilers have clashing ids
@@ -133,7 +133,7 @@ const defArgs = {
     port: opts.port || 10240,
     gitReleaseName: gitReleaseName,
     travisBuildNumber: travisBuildNumber,
-    wantedLanguage: opts.language || null,
+    wantedLanguages: opts.language || null,
     doCache: !opts.noCache,
     fetchCompilersFromRemote: !opts.noRemoteFetch,
     ensureNoCompilerClash: opts.ensureNoIdClash,
@@ -177,12 +177,12 @@ const ceProps = props.propsFor("compiler-explorer");
 
 let languages = require('./lib/languages').list;
 
-if (defArgs.wantedLanguage) {
+if (defArgs.wantedLanguages) {
     const filteredLangs = {};
     _.each(languages, lang => {
-        if (lang.id === defArgs.wantedLanguage ||
-            lang.name === defArgs.wantedLanguage ||
-            (lang.alias && lang.alias.indexOf(defArgs.wantedLanguage) >= 0)) {
+        if (defArgs.wantedLanguages.indexOf(lang.id) >= 0 ||
+            defArgs.wantedLanguages.indexOf(lang.name) >= 0 ||
+            (lang.alias && lang.alias.some(arg => defArgs.wantedLanguages.indexOf(arg) >= 0))) {
             filteredLangs[lang.id] = lang;
         }
     });
